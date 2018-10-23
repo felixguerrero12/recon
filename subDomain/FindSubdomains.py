@@ -1,7 +1,7 @@
-import requests
+import requests, sys
 from bs4 import BeautifulSoup
 
-domain = raw_input("What domain do you want to search for? ")
+domain = sys.argv[1] 
 print "Downloading the results."
 data = requests.get('https://findsubdomains.com/subdomains-of/' + domain)
 
@@ -13,4 +13,4 @@ soup = BeautifulSoup(data.text, 'html.parser')
 data = []
 for tr in soup.find_all('a', { 'class': 'aggregated-link mobile-hidden' }):
     data.append(tr.attrs['href'])
-print data
+print str(data)
