@@ -1,10 +1,13 @@
 import requests
 import sys
 import json
-
+import random
 
 def query(domain, headers, dnstype):
-    url = "https://cloudflare-dns.com/dns-query?name="+domain+"&type="+dnstype
+    cfurl = "https://cloudflare-dns.com/dns-query?name="+domain+"&type="+dnstype
+    gurl = "https://dns.google.com/resolve?name="+domain+"&type="+dnstype
+    DoHServer = [cfurl, gurl]
+    url = random.choice(DoHServer)
     r = requests.get(url, headers=headers, verify=True)
     return json.loads(r.text)
 
