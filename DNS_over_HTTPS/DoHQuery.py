@@ -11,7 +11,12 @@ def query(domain, headers, dnstype):
     Q = "https://9.9.9.9/dns-query?name="+domain+"&type="+dnstype
     DoHServer = [CFI, CFII, G, Q]
     url = random.choice(DoHServer)
-    r = requests.get(url, headers=headers, verify=True)
+    if DoHServer == CFII:
+	r = requests.get(url, headers, verify=False)
+    elif DoHServer == Q:
+	r = requests.get(url, headers, verify=False)
+    else:
+	r = requests.get(url, headers)
     return json.loads(r.text)
 
 
