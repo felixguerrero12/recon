@@ -7,21 +7,30 @@ import random
 def query(domain, headers, dnstype):
     CFI = "https://cloudflare-dns.com/dns-query?name="+domain+"&type="+dnstype
     CFII = "https://1.1.1.1/dns-query?name="+domain+"&type="+dnstype
-    G = "https://dns.google.com/resolve?name="+domain+"&type="+dnstype
-    Q = "https://9.9.9.9/dns-query?name="+domain+"&type="+dnstype
-    DoHServer = [CFI, CFII, G, Q]
+    GI = "https://dns.google.com/resolve?name="+domain+"&type="+dnstype
+    QI = "https://9.9.9.9/dns-query?name="+domain+"&type="+dnstype
+    DoHServer = [CFI, CFII, GI, QI]
     url = random.choice(DoHServer)
-    if DoHServer == CFII:
-	r = requests.get(url, headers, verify=False)
-    elif DoHServer == Q:
-	r = requests.get(url, headers, verify=False)
+    print url
+    if url is CFII:
+        requests.packages.urllib3.disable_warnings()
+        r = requests.get(url, headers=headers, verify=False)
+        return json.loads(r.text)
+    elif url is CFI:
+        requests.packages.urllib3.disable_warnings()
+        r = requests.get(url, headers=headers, verify=False)
+        return json.loads(r.text)
+    elif url is QI:
+        requests.packages.urllib3.disable_warnings()
+        r = requests.get(url, headers=headers, verify=False)
+        return json.loads(r.text)
     else:
-	r = requests.get(url, headers)
-    return json.loads(r.text)
+        r = requests.get(url, headers=headers)
+        return json.loads(r.text)
 
 
 def main(argv):
-    headers = {"User-Agent": "Pikachu", "Accept": "application/dns-json"}
+    headers = {"Accept": "application/dns-json"}
     domain = argv[1]
     dnstype = sys.argv[2] if len(sys.argv) >= 3 else 'A'
     print query(domain, headers, dnstype)
