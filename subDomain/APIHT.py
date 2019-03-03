@@ -9,8 +9,9 @@ def getResults(IPAddr):
 
 
 def main(argv):
-    IPAddr = sys.argv[1]
-    print getResults(IPAddr)
+    for i in range(1,len(sys.argv)):
+        IPAddr = sys.argv[i]
+        print getResults(IPAddr)
 
 
 if __name__ == "__main__":
