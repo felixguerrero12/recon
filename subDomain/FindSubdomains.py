@@ -13,8 +13,9 @@ def getResults(domain):
 
 
 def main(argv):
-    domain = sys.argv[1]
-    print getResults(domain)
+    for i in range(1,len(sys.argv)):
+	    domain = sys.argv[i]
+        print getResults(domain)
 
 
 if __name__ == "__main__":
